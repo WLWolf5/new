@@ -24,4 +24,5 @@ jobs:
 
     - name: Try to extract
       run: |
+        ls -lh
         7z x qsdk-12.5-k5.4.7z -m0=LZMA2 -mmt=on
