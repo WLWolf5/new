@@ -2,6 +2,8 @@ name: Build AX6 QSDK (K5.4)
 
 on:
   repository_dispatch:
+  workflow_dispatch:
+    inputs:
 
 env:
   FILE_NAME: qsdk-12.5-k5.4.7z
