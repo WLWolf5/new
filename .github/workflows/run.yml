@@ -1,0 +1,23 @@
+name: Show PWD
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 400
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Show PWD
+      run: |
+        pwd
+        ls
