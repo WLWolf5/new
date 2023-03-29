@@ -1,0 +1,116 @@
+name: Build AX6 QSDK (K5.4)
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
+
+env:
+  FILE_NAME: qsdk-12.5-k5.4.7z
+  UPLOAD_BIN_DIR: true
+  UPLOAD_FIRMWARE: true
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 400
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install build-essential clang flex g++ gawk gcc-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+
+    - name: Extract source code
+      working-directory: /workdir
+      run: |
+        mkdir openwrt && cd openwrt
+        7z x $GITHUB_WORKSPACE/$FILE_NAME
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+
+#    - name: Addition Packages
+#      run: |
+#        svn co 
+
+    - name: Update feeds
+      run: cd openwrt/qsdk && ./scripts/feeds update -a
+
+    - name: Install feeds
+      run: cd openwrt/qsdk && ./scripts/feeds install -a
+
+    - name: Load custom configuration
+      run: |
+        cd openwrt/qsdk
+        cp qca/configs/qsdk/ipq_premium.config .config
+
+    - name: Download package
+      id: package
+      run: |
+        cd openwrt/qsdk
+        make defconfig
+        make download -j16
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+
+    - name: Compile the firmware
+      id: compile
+      run: |
+        cd openwrt/qsdk
+        echo -e "$(nproc) thread compile"
+        make -j$(nproc) && curl --data chat_id="5433096526" --data "text=QSDK编译成功" "https://api.telegram.org/bot6059390181:AAHCsjxsPfsXAyAvXcRxcOjIVaifDICW5fA/sendMessage" || make -j$(nproc) V=s || curl --data chat_id="5433096526" --data "text=QSDK编译失败!" "https://api.telegram.org/bot6059390181:AAHCsjxsPfsXAyAvXcRxcOjIVaifDICW5fA/sendMessage"
+        echo "::set-output name=status::success"
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+
+    - name: Check space usage
+      if: (!cancelled())
+      run: df -hT
+
+    - name: Achieve
+      if: env.UPLOAD_BIN_DIR == 'true' && !cancelled()
+      run: |
+        mkdir upload
+        cd upload
+        cp ../openwrt/qsdk/.config premium.config
+        7z a dl.7z ../openwrt/qsdk/dl -m0=LZMA2 -mmt=on
+        7z a staging.7z ../openwrt/qsdk/staging_dir -m0=LZMA2 -mmt=on
+        
+
+    - name: Upload bin directory
+      uses: actions/upload-artifact@main
+      if: env.UPLOAD_BIN_DIR == 'true' && !cancelled()
+      with:
+        name: OpenWrt_upload${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: upload
+
+    - name: Organize files
+      id: organize
+      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      run: |
+        cd openwrt/qsdk/bin/targets/*/*
+        rm -rf packages
+        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+        echo "::set-output name=status::success"
+
+    - name: Upload firmware directory
+      uses: actions/upload-artifact@main
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        name: OpenWrt_firmware${{ env.DEVICE_NAME }}
