@@ -33,6 +33,11 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
 
+    - name: Download Source Code
+      run: |
+        rm -rf *.7z
+        curl -LO https://media.githubusercontent.com/media/WLWolf5/test5/master/$FILE_NAME
+
     - name: Extract source code
       working-directory: /workdir
       run: |
