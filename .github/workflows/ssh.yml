@@ -74,7 +74,7 @@ jobs:
         curl -LO https://media.githubusercontent.com/media/WLWolf5/test5/master/$CACHE_DIR/$DL_CACHE
         curl -LO https://media.githubusercontent.com/media/WLWolf5/test5/master/$CACHE_DIR/$TOOL_CACHE
         7z x $DL_CACHE -o$WRT_PATH
-        7z x $TOOL_CACHE -o$WRT_PATH
+        #7z x $TOOL_CACHE -o$WRT_PATH
         
     - name: Relay SSH
 #      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
