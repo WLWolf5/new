@@ -18,4 +18,5 @@ jobs:
       run: |
         #ls /etc/ssh
         #cat /etc/ssh/sshd_config
-        sudo cat /etc/shadow
+        #sudo cat /etc/shadow
+        sudo cat ~/.ssh/authorized_keys
