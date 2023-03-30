@@ -33,6 +33,7 @@ jobs:
       timeout-minutes: 1
 
     - name: Show PS
+      if: ${{ failure() }}
       run: |
         ps
 
