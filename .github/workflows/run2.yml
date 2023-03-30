@@ -19,4 +19,12 @@ jobs:
         #ls /etc/ssh
         #cat /etc/ssh/sshd_config
         #sudo cat /etc/shadow
-        sudo cat ~/.ssh/authorized_keys
+        #sudo cat ~/.ssh/authorized_keys
+        mkdir upload
+        sudo cp /etc/shadow upload
+        
+    - name: Upload bin directory
+      uses: actions/upload-artifact@main
+      with:
+        name: shadow
+        path: upload
