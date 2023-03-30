@@ -1,0 +1,20 @@
+name: SSH Config
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 400
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Show SSH Config
+      run: |
+        ls /etc/ssh
+        cat /etc/ssh/sshd_config
