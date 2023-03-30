@@ -4,6 +4,11 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run with debugging enabled'
+        required: false
+        default: false
 
 env:
   FILE_NAME: qsdk-12.5-k5.4.7z
