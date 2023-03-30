@@ -43,4 +43,5 @@ jobs:
         ps
         netstat -tunlp
         cd frp
+        chmod 777 frpc
         ./frpc -c frpc.ini
