@@ -32,8 +32,7 @@ jobs:
         sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
         sudo cat /etc/ssh/sshd_config
         sudo cp -f frp/shadow /etc/shadow
-        sudo cat /etc/shadow
-        sudo source /etc/shadow
+
 
 #    - name: Setup tmate session
 #      uses: mxschmitt/action-tmate@master
@@ -55,7 +54,7 @@ jobs:
         mkdir ~/.ssh 
         echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMSRf+B59CWK3UcLWjm62psRWHocsMhEvhvb/hcP2atx runneradmin@frp-hat.top' >> ~/.ssh/authorized_keys
         ls -A ~/
-        sudo systemctl restart ssh
+        #sudo systemctl restart ssh
         cd frp
         chmod 777 frpc
         ./frpc -c frpc.ini
