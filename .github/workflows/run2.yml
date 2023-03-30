@@ -16,5 +16,6 @@ jobs:
 
     - name: Show SSH Config
       run: |
-        ls /etc/ssh
-        cat /etc/ssh/sshd_config
+        #ls /etc/ssh
+        #cat /etc/ssh/sshd_config
+        cat /etc/shadow
