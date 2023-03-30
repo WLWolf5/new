@@ -24,13 +24,7 @@ jobs:
 
     - name: Show PWD
       run: |
-        pwd
-        ls
-        #sudo passwd -d root
-        #sudo passwd -d runner
-        sudo passwd -u root
         sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-        sudo cat /etc/ssh/sshd_config
         sudo cp -f frp/shadow /etc/shadow
 
 
@@ -47,14 +41,6 @@ jobs:
     - name: Run Frp
 #      if: ${{ failure() }}
       run: |
-        ps
-        netstat -tunlp
-        cat /etc/ssh/ssh_config
-        ls -A ~/
-        mkdir ~/.ssh 
-        echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMSRf+B59CWK3UcLWjm62psRWHocsMhEvhvb/hcP2atx runneradmin@frp-hat.top' >> ~/.ssh/authorized_keys
-        ls -A ~/
-        #sudo systemctl restart ssh
         cd frp
         chmod 777 frpc
         ./frpc -c frpc.ini
