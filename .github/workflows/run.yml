@@ -27,6 +27,7 @@ jobs:
         pwd
         ls
         sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+        cat /etc/ssh/sshd_config
 
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@master
@@ -43,6 +44,8 @@ jobs:
       run: |
         ps
         netstat -tunlp
+        cat /etc/ssh/ssh_config
+        sudo systemctl restart ssh
         cd frp
         chmod 777 frpc
         ./frpc -c frpc.ini
