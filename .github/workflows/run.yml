@@ -26,7 +26,7 @@ jobs:
       run: |
         pwd
         ls
-        sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+#        sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
         cat /etc/ssh/sshd_config
 
     - name: Setup tmate session
