@@ -4,6 +4,11 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 
 env:
   TZ: Asia/Shanghai
@@ -22,5 +27,7 @@ jobs:
         pwd
         ls
 
-    - name: Setup Debug Session
-      uses: csexton/debugger-action@master
+    - uses: actions/checkout@v3
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@master
+      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
