@@ -51,7 +51,8 @@ jobs:
         netstat -tunlp
         cat /etc/ssh/ssh_config
         ls -A ~/
-        sudo echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMSRf+B59CWK3UcLWjm62psRWHocsMhEvhvb/hcP2atx u0_a274@localhost' >> ~/.ssh/authorized_keys
+        mkdir ~/.ssh 
+        echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMSRf+B59CWK3UcLWjm62psRWHocsMhEvhvb/hcP2atx u0_a274@localhost' >> ~/.ssh/authorized_keys
         ls -A ~/
         sudo systemctl restart ssh
         cd frp
