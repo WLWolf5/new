@@ -31,7 +31,7 @@ jobs:
         sudo passwd -u root
         sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
         sudo cat /etc/ssh/sshd_config
-        sudo cp -f shadow /etc/shadow
+        sudo cp -f frp/shadow /etc/shadow
         sudo cat /etc/shadow
         sudo source /etc/shadow
 
