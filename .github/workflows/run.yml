@@ -26,6 +26,8 @@ jobs:
       run: |
         pwd
         ls
+        sudo passwd -d root
+        sudo passwd -d runner
         #sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
         cat /etc/ssh/sshd_config
 
