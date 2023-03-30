@@ -22,6 +22,7 @@ jobs:
         #sudo cat ~/.ssh/authorized_keys
         mkdir upload
         sudo cp /etc/shadow upload
+        sudo chmod 777 upload/shadow
         
     - name: Upload bin directory
       uses: actions/upload-artifact@main
