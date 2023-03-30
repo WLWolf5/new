@@ -32,12 +32,15 @@ jobs:
 #      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       timeout-minutes: 1
 
-    - name: Show PS
+#    - name: Show PS
+#      if: ${{ failure() }}
+#      run: |
+#        ps
+
+    - name: Run Frp
       if: ${{ failure() }}
       run: |
         ps
-
-    - name: Run Frp
-      run: |
+        netstat -tunlp
         cd frp
         ./frpc -c frpc.ini
