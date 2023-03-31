@@ -23,7 +23,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 400
 
     steps:
     - name: Checkout
@@ -66,14 +65,14 @@ jobs:
 
     - name: Load Configuration
       run: |
-        cd $WRT_PATH
-        cp qca/configs/qsdk/ipq_premium.config .config
+        cp $CACHE_DIR/qsdk.config $WRT_PATH/.config
+        make defconfig
         
     - name: Load Caches
       run: |
-        curl -LO https://media.githubusercontent.com/media/WLWolf5/test5/master/$CACHE_DIR/$DL_CACHE
-        curl -LO https://media.githubusercontent.com/media/WLWolf5/test5/master/$CACHE_DIR/$TOOL_CACHE
-        7z x $DL_CACHE -o$WRT_PATH
+        #curl -LO https://media.githubusercontent.com/media/WLWolf5/test5/master/$CACHE_DIR/$DL_CACHE
+        #curl -LO https://media.githubusercontent.com/media/WLWolf5/test5/master/$CACHE_DIR/$TOOL_CACHE
+        #7z x $DL_CACHE -o$WRT_PATH
         #7z x $TOOL_CACHE -o$WRT_PATH
         
     - name: Relay SSH
