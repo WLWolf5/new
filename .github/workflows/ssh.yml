@@ -66,6 +66,7 @@ jobs:
     - name: Load Configuration
       run: |
         cp $CACHE_DIR/qsdk.config $WRT_PATH/.config
+        cd $WRT_PATH
         make defconfig
         
     - name: Load Caches
