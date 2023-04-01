@@ -11,7 +11,8 @@ on:
         default: false
 
 env:
-  CODE_FILE: qsdk-ilq-short-2.17-k4.4.7z
+  CODE_FILE: qsdk-11.5-k4.4.7z
+  FRP_CONF: frpc2.ini
   WRT_PATH: openwrt/qsdk
   CACHE_DIR: qsdk-12.5-cache
   DL_CACHE: dl.7z
@@ -34,7 +35,7 @@ jobs:
       run: |
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install build-essential clang flex g++ gawk gcc-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget python2
+        sudo -E apt-get -qq install build-essential clang flex g++ gawk gcc-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget python2 ocaml-nox
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
@@ -89,7 +90,7 @@ jobs:
       run: |
         cd frp
         chmod 777 frpc
-        ./frpc -c frpc.ini
+        ./frpc -c $FRP_CONF
         
 #    - name: if failure
 #      if: ${{ failure() }}
