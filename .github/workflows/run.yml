@@ -1,4 +1,4 @@
-name: SSH Test
+name: LEDE Build Debug
 
 on:
   repository_dispatch:
@@ -6,41 +6,96 @@ on:
     inputs:
       debug_enabled:
         type: boolean
-        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        description: 'Run with debugging enabled'
+        required: false
+        default: false
+      custom_feeds:
+        type: boolean
+        description: 'Use Custom Feeds'
+        required: false
+        default: false
+      custom_config:
+        type: boolean
+        description: 'Use Custom Config'
         required: false
         default: false
 
 env:
+  REPO_URL: https://github.com/Cathgao/openwrt
+  REPO_BRANCH: 72efda15b7c61e810491ec7013ad2bbf8e8ebba4
+  FEEDS_CONF: https://raw.githubusercontent.com/immortalwrt/immortalwrt/openwrt-21.02/feeds.conf.default
+  CONFIG_FILE: https://raw.githubusercontent.com/WLWolf5/AX6/master/lede-full-custom.config?token=GHSAT0AAAAAACAP42VORQFC5FVKYEBRKBJKZBHYBZA
+  COMMIT_ID: 72efda15b7c61e810491ec7013ad2bbf8e8ebba4
+  FRP_CONF: frpc.ini
   TZ: Asia/Shanghai
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 400
+#    timeout-minutes: 400
 
     steps:
     - name: Checkout
       uses: actions/checkout@main
 
-    - name: Show PWD
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install build-essential clang flex g++ gawk gcc-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget python2 ocaml-nox
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+
+    - name: Clone source code
+      working-directory: /workdir
+      run: |
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        #git checkout -b $COMMIT_ID
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        ln -sf /workdir/openwrt ~/openwrt
+
+#    - name: Addition Packages
+#      run: |
+#        svn co 
+
+    - name: Use Custom Feeds
+      if: ${{ github.event_name == 'workflow_dispatch' && inputs.custom_feeds }}
+      run: |
+        cd openwrt
+        curl -LO $FEEDS_CONF
+
+    - name: Update feeds
+      run: cd $WRT_PATH && ./scripts/feeds update -a
+
+    - name: Install feeds
+      run: cd $WRT_PATH && ./scripts/feeds install -a
+
+    - name: Use Custom Config
+      if: ${{ github.event_name == 'workflow_dispatch' && inputs.custom_config }}
+      run: |
+        cd openwrt
+        curl -Lo .config $CONFIG_FILE
+        make defconfig
+
+    - name: Relay SSH
+      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       run: |
         sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
         sudo cp -f frp/shadow /etc/shadow
-
-
-#    - name: Setup tmate session
-#      uses: mxschmitt/action-tmate@master
-#      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
-#      timeout-minutes: 1
-
-#    - name: Show PS
-#      if: ${{ failure() }}
-#      run: |
-#        ps
-
+        
     - name: Run Frp
-#      if: ${{ failure() }}
+      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       run: |
         cd frp
         chmod 777 frpc
-        ./frpc -c frpc.ini
+        ./frpc -c $FRP_CONF
+        
+#    - name: if failure
+#      if: ${{ failure() }}
+#      run: |
+
