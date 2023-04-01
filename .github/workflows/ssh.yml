@@ -11,7 +11,7 @@ on:
         default: false
 
 env:
-  CODE_FILE: qsdk-12.5-k5.4.7z
+  CODE_FILE: qsdk-ilq-short-2.17-k4.4.7z
   WRT_PATH: openwrt/qsdk
   CACHE_DIR: qsdk-12.5-cache
   DL_CACHE: dl.7z
@@ -52,6 +52,7 @@ jobs:
         mkdir openwrt && cd openwrt
         7z x $GITHUB_WORKSPACE/$CODE_FILE
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        ln -sf /workdir/$WRT_PATH ~/openwrt
 
 #    - name: Addition Packages
 #      run: |
@@ -65,9 +66,10 @@ jobs:
 
     - name: Load Configuration
       run: |
-        cp $CACHE_DIR/qsdk.config $WRT_PATH/.config
+        #cp $CACHE_DIR/qsdk.config $WRT_PATH/.config
+        #cp $WRT_PATH/qca/configs/qsdk/ipq_premium.config $WRT_PATH/.config
         cd $WRT_PATH
-        make defconfig
+        #make defconfig
         
     - name: Load Caches
       run: |
