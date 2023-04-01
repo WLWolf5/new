@@ -23,7 +23,7 @@ on:
 env:
   REPO_URL: https://github.com/Cathgao/openwrt
   REPO_BRANCH: master
-  FEEDS_CONF: https://raw.githubusercontent.com/immortalwrt/immortalwrt/openwrt-21.02/feeds.conf.default
+  FEEDS_CONF: https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/feeds.conf.default
   CONFIG_FILE: https://raw.githubusercontent.com/WLWolf5/test6/main/lede.config
   COMMIT_ID: 72efda15b7c61e810491ec7013ad2bbf8e8ebba4
   FRP_CONF: frpc2.ini
