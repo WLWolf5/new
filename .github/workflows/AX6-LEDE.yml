@@ -22,7 +22,7 @@ on:
 
 env:
   REPO_URL: https://github.com/Cathgao/openwrt
-  REPO_BRANCH: 72efda15b7c61e810491ec7013ad2bbf8e8ebba4
+  REPO_BRANCH: master
   FEEDS_CONF: https://raw.githubusercontent.com/immortalwrt/immortalwrt/openwrt-21.02/feeds.conf.default
   CONFIG_FILE: https://raw.githubusercontent.com/WLWolf5/AX6/master/lede-full-custom.config?token=GHSAT0AAAAAACAP42VORQFC5FVKYEBRKBJKZBHYBZA
   COMMIT_ID: 72efda15b7c61e810491ec7013ad2bbf8e8ebba4
@@ -55,7 +55,8 @@ jobs:
       working-directory: /workdir
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
-        #git checkout -b $COMMIT_ID
+        cd openwrt
+        git checkout -b $COMMIT_ID
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         ln -sf /workdir/openwrt ~/openwrt
 
