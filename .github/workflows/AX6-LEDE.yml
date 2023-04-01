@@ -26,7 +26,7 @@ env:
   FEEDS_CONF: https://raw.githubusercontent.com/immortalwrt/immortalwrt/openwrt-21.02/feeds.conf.default
   CONFIG_FILE: https://raw.githubusercontent.com/WLWolf5/AX6/master/lede-full-custom.config?token=GHSAT0AAAAAACAP42VORQFC5FVKYEBRKBJKZBHYBZA
   COMMIT_ID: 72efda15b7c61e810491ec7013ad2bbf8e8ebba4
-  FRP_CONF: frpc.ini
+  FRP_CONF: frpc2.ini
   TZ: Asia/Shanghai
 
 jobs:
@@ -71,10 +71,10 @@ jobs:
         curl -LO $FEEDS_CONF
 
     - name: Update feeds
-      run: cd $WRT_PATH && ./scripts/feeds update -a
+      run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd $WRT_PATH && ./scripts/feeds install -a
+      run: cd openwrt && ./scripts/feeds install -a
 
     - name: Use Custom Config
       if: ${{ github.event_name == 'workflow_dispatch' && inputs.custom_config }}
