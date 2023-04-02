@@ -25,8 +25,8 @@ env:
   REPO_BRANCH: master
   FEEDS_CONF: https://raw.githubusercontent.com/WLWolf5/test6/main/immortal-feed.conf
   CONFIG_FILE: https://raw.githubusercontent.com/WLWolf5/test6/main/lede-full.config
-  COMMIT_ID: e036c0650f0c109782ec868db1d052896b64b652
-  FRP_CONF: frpc2.ini
+  COMMIT_ID: e69815120ad5d1b5e9b1aa4c98d69e6ce6e8f3b4
+  FRP_CONF: frpc.ini
   TZ: Asia/Shanghai
 
 jobs:
@@ -118,6 +118,7 @@ jobs:
         curl -LO https://raw.githubusercontent.com/WLWolf5/test6/main/optimize.sh
         curl -LO https://raw.githubusercontent.com/WLWolf5/test6/main/optimize2.sh
         chmod +x optimize.sh optimize2.sh
+        ./optimize.sh
 
     - name: Relay SSH
       if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
