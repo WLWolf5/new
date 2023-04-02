@@ -79,8 +79,9 @@ jobs:
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
       
-    - name: optimize luci
+    - name: Optimize luci
       run: |
+        cd openwrt
         curl -LO https://raw.githubusercontent.com/QiuSimons/YAOF/22.03/SCRIPTS/03_convert_translation.sh
         chmod +x 03_convert_translation.sh
         ./03_convert_translation.sh
@@ -102,7 +103,7 @@ jobs:
       working-directory: ${{ github.workspace }}/openwrt
       run: |
         TARGET_DEVICE_ARCH="$(grep "^CONFIG_TARGET_.*_.*=y$" ".config" | head -n 1 | sed 's/^CONFIG_TARGET_//g' | awk -F '_' '{print $1}')"
-        echo "TARGET_DEVICE_ARCH=${TARGET_DEVICE_ARCH}-3399" >>$GITHUB_ENV
+        echo "TARGET_DEVICE_ARCH=${TARGET_DEVICE_ARCH}" >>$GITHUB_ENV
 
     - name: Cache
       uses: HiGarfield/cachewrtbuild@main
