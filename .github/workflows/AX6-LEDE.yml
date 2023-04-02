@@ -25,7 +25,7 @@ env:
   REPO_BRANCH: master
   FEEDS_CONF: https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/feeds.conf.default
   CONFIG_FILE: https://raw.githubusercontent.com/WLWolf5/test6/main/lede-full.config
-  COMMIT_ID: d2a4fb1c89b36e4947ca931f23b96e7f862c6d8d
+  COMMIT_ID: e036c0650f0c109782ec868db1d052896b64b652
   FRP_CONF: frpc.ini
   TZ: Asia/Shanghai
 
