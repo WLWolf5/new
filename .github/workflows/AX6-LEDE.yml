@@ -25,13 +25,14 @@ env:
   REPO_BRANCH: master
   FEEDS_CONF: https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/feeds.conf.default
   CONFIG_FILE: https://raw.githubusercontent.com/WLWolf5/test6/main/lede.config
-  COMMIT_ID: 72efda15b7c61e810491ec7013ad2bbf8e8ebba4
+  COMMIT_ID: d2a4fb1c89b36e4947ca931f23b96e7f862c6d8d
   FRP_CONF: frpc2.ini
   TZ: Asia/Shanghai
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
 #    timeout-minutes: 400
 
     steps:
@@ -42,6 +43,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        ulimit -a
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install aria2
@@ -77,7 +79,7 @@ jobs:
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
       
-    - name: Update feeds
+    - name: optimize luci
       run: |
         curl -LO https://raw.githubusercontent.com/QiuSimons/YAOF/22.03/SCRIPTS/03_convert_translation.sh
         chmod +x 03_convert_translation.sh
@@ -95,10 +97,17 @@ jobs:
         cd openwrt
         curl -Lo .config $CONFIG_FILE
         make defconfig
-        
+
+    - name: Get Architecture
+      working-directory: ${{ github.workspace }}/openwrt
+      run: |
+        TARGET_DEVICE_ARCH="$(grep "^CONFIG_TARGET_.*_.*=y$" ".config" | head -n 1 | sed 's/^CONFIG_TARGET_//g' | awk -F '_' '{print $1}')"
+        echo "TARGET_DEVICE_ARCH=${TARGET_DEVICE_ARCH}-3399" >>$GITHUB_ENV
+
     - name: Cache
       uses: HiGarfield/cachewrtbuild@main
       with:
+        ccache: 'true'
         mixkey: ${{ env.TARGET_DEVICE_ARCH }}
         prefix: ${{ github.workspace }}/openwrt
 
