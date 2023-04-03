@@ -1,4 +1,4 @@
-name: Immortalwrt Build Debug
+name: Robimarko Build Debug
 
 on:
   repository_dispatch:
@@ -21,9 +21,9 @@ on:
         default: false
 
 env:
-  REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: master
-  FEEDS_CONF: https://raw.githubusercontent.com/WLWolf5/test6/main/immortal-feed.conf
+  REPO_URL: https://github.com/robimarko/openwrt
+  REPO_BRANCH: ipq807x-5.15-pr-nss-crypto
+  FEEDS_CONF: https://raw.githubusercontent.com/immortalwrt/immortalwrt/master/feeds.conf.default
   CONFIG_FILE: https://raw.githubusercontent.com/WLWolf5/test6/main/lede-full.config
   FRP_CONF: frpc.ini
   TZ: Asia/Shanghai
@@ -68,6 +68,12 @@ jobs:
 #      run: |
 #        svn co 
 
+    - name: Use Custom Feeds
+      if: ${{ github.event_name == 'workflow_dispatch' && inputs.custom_feeds }}
+      run: |
+        cd openwrt
+        curl -Lo feeds.conf.default $FEEDS_CONF
+
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
       
@@ -89,7 +95,7 @@ jobs:
       run: |
         cd openwrt
         curl -Lo .config $CONFIG_FILE
-        #make defconfig
+        make defconfig
 
     - name: Get Architecture
       working-directory: ${{ github.workspace }}/openwrt
@@ -106,10 +112,9 @@ jobs:
     - name: Get Optimize Script
       working-directory: ${{ github.workspace }}/openwrt
       run: |
-        curl -LO https://raw.githubusercontent.com/WLWolf5/test6/main/optimize.sh
-        curl -LO https://raw.githubusercontent.com/WLWolf5/test6/main/optimize2.sh
-        chmod +x optimize.sh optimize2.sh
-        #./optimize.sh
+        curl -LO https://raw.githubusercontent.com/WLWolf5/test6/main/optimize-robi.sh
+        chmod +x optimize-robi.sh
+        #./optimize-robi.sh
 
     - name: Relay SSH
       if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
