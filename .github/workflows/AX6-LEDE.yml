@@ -74,7 +74,7 @@ jobs:
       if: ${{ github.event_name == 'workflow_dispatch' && inputs.custom_feeds }}
       run: |
         cd openwrt
-        curl -LO $FEEDS_CONF
+        curl -Lo feeds.conf.default $FEEDS_CONF
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -97,7 +97,7 @@ jobs:
       run: |
         cd openwrt
         curl -Lo .config $CONFIG_FILE
-        make defconfig
+        #make defconfig
 
     - name: Get Architecture
       working-directory: ${{ github.workspace }}/openwrt
