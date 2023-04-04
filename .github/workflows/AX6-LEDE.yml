@@ -25,7 +25,7 @@ env:
   REPO_BRANCH: master
   FEEDS_CONF: https://raw.githubusercontent.com/WLWolf5/test6/main/immortal-feed.conf
   CONFIG_FILE: https://raw.githubusercontent.com/WLWolf5/test6/main/lede-full.config
-  COMMIT_ID: e69815120ad5d1b5e9b1aa4c98d69e6ce6e8f3b4
+  COMMIT_ID: 5f8538b5ccffc2b01d54b6a97db2460ba9a0d1d9
   FRP_CONF: frpc.ini
   TZ: Asia/Shanghai
 
@@ -97,7 +97,7 @@ jobs:
       run: |
         cd openwrt
         curl -Lo .config $CONFIG_FILE
-        #make defconfig
+        make defconfig
 
     - name: Get Architecture
       working-directory: ${{ github.workspace }}/openwrt
