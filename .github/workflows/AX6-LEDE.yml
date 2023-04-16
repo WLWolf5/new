@@ -82,9 +82,9 @@ jobs:
     - name: Optimize luci
       run: |
         cd openwrt
-        curl -LO https://raw.githubusercontent.com/QiuSimons/YAOF/22.03/SCRIPTS/03_convert_translation.sh
-        chmod +x 03_convert_translation.sh
-        ./03_convert_translation.sh
+        #curl -LO https://raw.githubusercontent.com/QiuSimons/YAOF/22.03/SCRIPTS/03_convert_translation.sh
+        #chmod +x 03_convert_translation.sh
+        #./03_convert_translation.sh
         curl -LO https://raw.githubusercontent.com/QiuSimons/YAOF/22.03/SCRIPTS/05_create_acl_for_luci.sh
         chmod +x 05_create_acl_for_luci.sh
         ./05_create_acl_for_luci.sh -a
