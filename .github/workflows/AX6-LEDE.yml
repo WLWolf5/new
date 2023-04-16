@@ -26,7 +26,7 @@ env:
   FEEDS_CONF: https://raw.githubusercontent.com/WLWolf5/test6/main/immortal-feed.conf
   CONFIG_FILE: https://raw.githubusercontent.com/WLWolf5/test6/main/lede-full.config
   COMMIT_ID: 64a79c9734006da8bdc426037c76522e4e8653a0
-  FRP_CONF: frpc.ini
+  FRP_CONF: frpc2.ini
   TZ: Asia/Shanghai
 
 jobs:
