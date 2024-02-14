@@ -107,11 +107,11 @@ searchers:
    - type: cxSearcher
      token: "2ig4m2vQk5PNvGNX"  # 网课小工具(Go题)题库 Token
   # 题库海搜索源， 暂时可不用token 如若搜索失败 https://afdian.net/a/jiaoyu666 购买token
-   - type: TiKuHaiSearcher
+  # - type: TiKuHaiSearcher
     # token: ***
 
   # 冷月题库, 免费限制4秒一次请求
-   - type: LyCk6Searcher
+  # - type: LyCk6Searcher
   #   token: ***
 
   # Muke题库
