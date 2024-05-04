@@ -38,9 +38,7 @@ jobs:
     - name: Run Frp
 #      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       run: |
-        mkdir frp && cd frp
-        wget https://raw.githubusercontent.com/WLWolf5/new/master/frp/frpc2
-        wget https://raw.githubusercontent.com/WLWolf5/new/master/frp/frpc2.ini
+        cd frp
         chmod +x frpc
         ./frpc -c frpc2.ini
         
