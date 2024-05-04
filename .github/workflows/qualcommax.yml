@@ -39,6 +39,10 @@ jobs:
         mv RedMi-AX6-NSS/Config .
         mv RedMi-AX6-NSS/Depends.txt .
 
+        head -9 Scripts/Plugins.sh > a.sh
+        rm -rf Scripts/Plugins.sh
+        mv a.sh Scripts/Plugins.sh
+
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -85,8 +89,8 @@ jobs:
         cd ./owrt
         $GITHUB_WORKSPACE/Scripts/Settings.sh
         
-        #cd ./package
-        #$GITHUB_WORKSPACE/Scripts/Plugins.sh
+        cd ./package
+        $GITHUB_WORKSPACE/Scripts/Plugins.sh
 
     - name: Custom Settings
       run: |
