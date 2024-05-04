@@ -38,6 +38,9 @@ jobs:
     - name: Run Frp
 #      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       run: |
+        curl -L https://github.com/fatedier/frp/releases/download/v0.57.0/frp_0.57.0_linux_amd64.tar.gz -o frp.tar.gz
+        tar -xzf frp.tar.gz
+        cp -f frp_0.57.0_linux_amd64/frpc frp
         cd frp
         chmod +x frpc
         ./frpc -c frpc2.ini
