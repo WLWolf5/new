@@ -62,11 +62,6 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
-    - name: Cleanup Toolchain
-      run: |
-        cd ./immortalwrt
-        make dirclean
-
     - name: Download Packages
       run: |
         cd ./immortalwrt
