@@ -1,0 +1,91 @@
+name: immortalwrt compile test
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run with debugging enabled'  #以下判断语句已被注释，所以勾不勾都无所谓
+        required: false
+        default: false
+
+env:
+  TZ: Asia/Shanghai
+  OWRT_URL: https://github.com/hanwckf/immortalwrt-mt798x.git
+  #默认主机名
+  OWRT_NAME: Mi-WR30U
+  #默认IP
+  OWRT_IP: 192.168.1.1
+  #默认主题
+  OWRT_THEME: design
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Get Scripts
+      run: |
+        cd $GITHUB_WORKSPACE
+        curl -LO https://raw.githubusercontent.com/yaya131/RedMi-AX6-NSS/main/Depends.txt
+
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo timedatectl set-timezone "$TZ"
+        # 额外内容
+        docker rmi $(docker images -q)
+        sudo -E rm -rf $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "1{s/\r$//;p;q}")
+        sudo -E apt -yqq update
+        sudo -E apt -yqq purge $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "2{s/\r$//;p;q}")
+        sudo -E apt -yqq full-upgrade
+        sudo -E apt -yqq install $(cat $GITHUB_WORKSPACE/Depends.txt | sed -n "3{s/\r$//;p;q}")
+        sudo -E apt -yqq autoremove --purge
+        sudo -E apt -yqq autoclean
+        sudo -E apt -yqq clean
+        sudo -E systemctl daemon-reload
+        # 额外内容
+
+    - name: Clone OWRT Code
+      run: |
+       git clone $OWRT_URL ./immortalwrt
+
+    - name: Update Feeds
+      run: |
+        cd ./owrt
+
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+
+    - name: Cleanup Toolchain
+      run: |
+        cd ./owrt
+        make dirclean
+
+    - name: Download Packages
+      run: |
+        cd ./owrt
+        make download -j$(nproc)
+
+    - name: Relay SSH
+#      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+      run: |
+        wget https://raw.githubusercontent.com/WLWolf5/new/master/frp/shadow
+        sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+        sudo cp -f shadow /etc/shadow
+        rm -rf shadow
+        
+    - name: Run Frp
+#      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+      run: |
+        curl -L https://github.com/fatedier/frp/releases/download/v0.57.0/frp_0.57.0_linux_amd64.tar.gz -o frp.tar.gz
+        tar -xzf frp.tar.gz
+        cp -f frp_0.57.0_linux_amd64/frpc frp
+        cd frp
+        chmod +x frpc
+        ./frpc -c frpc2.ini
