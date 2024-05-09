@@ -57,19 +57,19 @@ jobs:
 
     - name: Update Feeds
       run: |
-        cd ./owrt
+        cd ./immortalwrt
 
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
     - name: Cleanup Toolchain
       run: |
-        cd ./owrt
+        cd ./immortalwrt
         make dirclean
 
     - name: Download Packages
       run: |
-        cd ./owrt
+        cd ./immortalwrt
         make download -j$(nproc)
 
     - name: Relay SSH
