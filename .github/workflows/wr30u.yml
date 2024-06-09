@@ -55,6 +55,17 @@ jobs:
       run: |
        git clone $OWRT_URL ./immortalwrt
 
+    - name: Update Feeds
+      run: |
+        cd ./immortalwrt
+
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+    - name: Copy Config
+      run: |
+        cd ./immortalwrt
+        cp -f ./defconfig/mt7981-ax3000.config ./.config
+
     - name: Relay SSH
 #      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       run: |
