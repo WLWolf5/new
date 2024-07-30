@@ -25,7 +25,8 @@ jobs:
 
     - name: Clone App Git
       run: |
-        git clone "$GIT-URL" APK
+        git clone $GIT_URL APK
+        cd APK
 
     - name: set up JDK 11
       uses: actions/setup-java@v3
