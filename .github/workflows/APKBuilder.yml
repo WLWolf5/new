@@ -13,6 +13,7 @@ on:
 env:
   TZ: Asia/Shanghai
   FRP_VER: 0.57.0
+  GIT_URL: https://github.com/JasonKhew96/bstarTweaks
 
 jobs:
   build:
@@ -22,12 +23,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
+    - name: Clone App Git
+      run: |
+        git clone "$GIT-URL" APK
+
+
     - name: set up JDK 11
       uses: actions/setup-java@v3
       with:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
+      run: cd APK
 
 #    - name: Grant execute permission for gradlew
 #      run: chmod +x gradlew
