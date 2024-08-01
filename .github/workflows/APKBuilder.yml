@@ -13,7 +13,7 @@ on:
 env:
   TZ: Asia/Shanghai
   FRP_VER: 0.57.0
-  GIT_URL: https://github.com/JasonKhew96/bstarTweaks
+  GIT_URL: https://github.com/zotero/zotero-android
 
 jobs:
   build:
@@ -22,6 +22,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main
+
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo timedatectl set-timezone "$TZ"
 
     - name: Clone App Git
       run: |
@@ -35,17 +41,19 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-#    - name: Grant execute permission for gradlew
-#      run: chmod +x gradlew
+    - name: Grant execute permission for gradlew
+      run: |
+        cd APK
+        chmod +x gradlew
 
 #    - name: Build with Gradle
 #      run: ./gradlew build
 
-    - name: Initialization environment
-      env:
-        DEBIAN_FRONTEND: noninteractive
-      run: |
-        sudo timedatectl set-timezone "$TZ"
+#    - name: Upload APK
+#      uses: actions/upload-artifact@main
+#      with:
+#        name: APK
+#        path: APK
 
     - name: Relay SSH
 #      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
