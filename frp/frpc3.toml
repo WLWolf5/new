@@ -1,0 +1,20 @@
+serverAddr = "hk-5.lcf.im"
+serverPort = 2333
+
+user = "fde41a1751d11a2e7eaabae41138bbf1"
+auth.token = "LoCyanToken"
+
+dnsServer = "119.29.29.29"
+transport.protocol = "tcp"
+transport.tcpMux = true
+transport.tcpMuxKeepaliveInterval = 30
+
+transport.tls.enable = false
+transport.tls.disableCustomTLSFirstByte = false
+
+[[proxies]]
+name = "WL_TCP_1"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 44260
