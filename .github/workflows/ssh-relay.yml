@@ -40,7 +40,7 @@ jobs:
 #      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       run: |
         curl -LO "https://raw.githubusercontent.com/WLWolf5/new/master/frp/frpc"
-        curl -LO "http://hk-5.lcf.im:44263/frpc.toml"
+        curl -LO "http://hk-5.lcf.im:44265/frpc.toml"
         chmod +x frpc
         ./frpc -c frpc.toml
         
