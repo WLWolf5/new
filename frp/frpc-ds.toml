@@ -1,0 +1,29 @@
+serverAddr = "jp-osaka-1.lcf.im"
+serverPort = 2333
+
+user = "fde41a1751d11a2e7eaabae41138bbf1"
+auth.token = "LoCyanToken"
+
+dnsServer = "8.8.8.8"
+transport.protocol = "tcp"
+transport.tcpMux = true
+transport.tcpMuxKeepaliveInterval = 30
+
+transport.tls.enable = false
+transport.tls.disableCustomTLSFirstByte = false
+
+loginFailExit = false
+
+[[proxies]]
+name = "WL_TCP_13"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 11434
+remotePort = 44273
+
+[[proxies]]
+name = "WL_TCP_14"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 8080
+remotePort = 44274
