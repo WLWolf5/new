@@ -33,4 +33,4 @@ name = "WL_TCP_12"
 type = "tcp"
 localIP = "127.0.0.1"
 localPort = 9880
-remotePort = 44273
+remotePort = 44272
