@@ -43,7 +43,7 @@ jobs:
         #curl -LO "http://hk-5.lcf.im:44265/frpc.toml"
         cd frp
         chmod +x frpc
-        ./frpc -c frpc3.toml
+        ./frpc -c frpc2.toml
         
 #    - name: if failure
 #      if: ${{ failure() }}
