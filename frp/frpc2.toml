@@ -2,10 +2,17 @@ user = "s-0001yebfa4ab08"
 auth.token = "bfa4909f726fab08"
 
 serverAddr = "frp-fly.top"
-serverPort = 7000
+serverPort = 8088
+
+dnsServer = "8.8.8.8"
+
+transport.tcpMux = true
+transport.tcpMuxKeepaliveInterval = 30
 
 transport.tls.enable = false
 transport.tls.disableCustomTLSFirstByte = false
+
+loginFailExit = false
 
 [[proxies]]
 # id = 13890808
