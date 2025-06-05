@@ -12,6 +12,8 @@ transport.tcpMuxKeepaliveInterval = 30
 transport.tls.enable = false
 transport.tls.disableCustomTLSFirstByte = false
 
+loginFailExit = false
+
 [[proxies]]
 name = "WL_TCP_1"
 type = "tcp"
