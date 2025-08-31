@@ -1,7 +1,7 @@
 user = "s-0001yebfa4ab08"
 auth.token = "bfa4909f726fab08"
 
-serverAddr = "frp-fly.top"
+serverAddr = "frp-fly.com"
 serverPort = 8088
 
 dnsServer = "8.8.8.8"
