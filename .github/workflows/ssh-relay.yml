@@ -21,6 +21,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main
+
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        components: clippy
+        default: true
       
     - name: Initialization environment
       env:
